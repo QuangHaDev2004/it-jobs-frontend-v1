@@ -42,7 +42,7 @@ export const FormLogin = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(dataFinal),
-          credentials: "include", // Quan trọng: gữi cookie backend trả về
+          credentials: "include", // Quan trọng: giữ cookie backend trả về
         })
           .then((res) => res.json())
           .then((data) => {
