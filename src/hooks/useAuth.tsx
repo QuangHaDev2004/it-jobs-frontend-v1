@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export const useAuth = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [infoUser, setInfoUser] = useState<any>(null);
-  // const [infoCompany, setInfoCompany] = useState<any>(null);
+  const [infoCompany, setInfoCompany] = useState<any>(null);
   const pathname = usePathname(); // Lấy URL hiện tại
 
   useEffect(() => {
@@ -22,15 +22,15 @@ export const useAuth = () => {
           setIsLogin(true);
           if (data.infoUser) {
             setInfoUser(data.infoUser);
-            // setInfoCompany(null);
+            setInfoCompany(null);
           }
-          // if (data.infoCompany) {
-          //   setInfoCompany(data.infoCompany);
-          //   setInfoUser(null);
-          // }
+          if (data.infoCompany) {
+            setInfoCompany(data.infoCompany);
+            setInfoUser(null);
+          }
         }
       });
   }, [pathname]);
 
-  return { isLogin, infoUser };
+  return { isLogin, infoUser, infoCompany };
 };
