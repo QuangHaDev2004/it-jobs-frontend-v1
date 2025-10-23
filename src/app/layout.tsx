@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "./components/header/Header";
 import { Footer } from "./components/footer/Footer";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "28.ITJobs",
@@ -21,6 +22,7 @@ export default function RootLayout({
         {children}
 
         <Footer />
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );
