@@ -9,6 +9,8 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { toast } from "sonner";
+import { useRef } from "react";
+import { EditorMCE } from "@/app/components/editor/EditorMCE";
 
 // Register the plugin
 registerPlugin(FilePondPluginFileValidateType, FilePondPluginImagePreview);
@@ -17,6 +19,7 @@ export const FormProfile = () => {
   const { infoCompany } = useAuth();
   const [logos, setLogos] = useState<any[]>([]);
   const [cityList, setCityList] = useState<any[]>([]);
+  const editorRef = useRef(null);
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/city/list`)
@@ -77,7 +80,10 @@ export const FormProfile = () => {
     const workOvertime = event.target.workOvertime.value;
     const email = event.target.email.value;
     const phone = event.target.phone.value;
-    const description = event.target.description.value;
+    let description = "";
+    if (editorRef.current) {
+      description = (editorRef.current as any).getContent();
+    }
     const city = event.target.city.value;
     let logo = null;
     if (logos.length > 0) {
@@ -288,12 +294,7 @@ export const FormProfile = () => {
             >
               Mô tả chi tiết
             </label>
-            <textarea
-              defaultValue={infoCompany.description}
-              name="description"
-              id="description"
-              className="w-[100%] h-[350px] border border-[#DEDEDE] rounded-[4px] py-[14px] px-[20px] font-[500] text-[14px] text-black"
-            ></textarea>
+            <EditorMCE editorRef={editorRef} value={infoCompany.description} />
           </div>
           <div className="sm:col-span-2">
             <button className="bg-[#0088FF] rounded-[4px] h-[48px] px-[20px] font-[700] text-[16px] text-white">
