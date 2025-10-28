@@ -8,9 +8,11 @@ import { FaBriefcase, FaLocationDot, FaUserTie } from "react-icons/fa6";
 
 export default function JobList() {
   const [jobList, setJobList] = useState<any[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(null);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/company/job/list`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/company/job/list?page=${page}`, {
       method: "GET",
       credentials: "include", // Gửi kèm cookie
     })
@@ -18,9 +20,15 @@ export default function JobList() {
       .then((data) => {
         if (data.code == "success") {
           setJobList(data.jobs);
+          setTotalPage(data.totalPage);
         }
       });
-  }, []);
+  }, [page]);
+
+  const handlePagination = (event: any) => {
+    const value = event.target.value;
+    setPage(parseInt(value));
+  };
 
   return (
     <>
@@ -110,16 +118,23 @@ export default function JobList() {
         })}
       </div>
 
-      <div className="mt-[30px]">
-        <select
-          name=""
-          className="border border-[#DEDEDE] rounded-[8px] py-[12px] px-[18px] font-[400] text-[16px] text-[#414042]"
-        >
-          <option value="">Trang 1</option>
-          <option value="">Trang 2</option>
-          <option value="">Trang 3</option>
-        </select>
-      </div>
+      {totalPage && (
+        <div className="mt-[30px]">
+          <select
+            onChange={handlePagination}
+            name=""
+            className="border border-[#DEDEDE] rounded-[8px] py-[12px] px-[18px] font-[400] text-[16px] text-[#414042]"
+          >
+            {Array(totalPage)
+              .fill("")
+              .map((_, index) => (
+                <option key={index} value={index + 1}>
+                  Trang {index + 1}
+                </option>
+              ))}
+          </select>
+        </div>
+      )}
     </>
   );
 }
