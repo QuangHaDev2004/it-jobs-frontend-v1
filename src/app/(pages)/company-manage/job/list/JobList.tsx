@@ -101,7 +101,7 @@ export default function JobList() {
               </div>
               <div className="flex items-center justify-center gap-[12px] mb-[20px]">
                 <Link
-                  href="#"
+                  href={`/company-manage/job/edit/${item.id}`}
                   className="bg-[#FFB200] rounded-[4px] font-[400] text-[14px] text-black inline-block py-[8px] px-[20px]"
                 >
                   Sửa
