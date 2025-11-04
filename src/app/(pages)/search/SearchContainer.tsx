@@ -8,6 +8,9 @@ import { useEffect, useState } from "react";
 export const SearchContainer = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(null);
+  const [totalRecord, setTotalRecord] = useState(null);
   const language = searchParams.get("language") || "";
   const city = searchParams.get("city") || "";
   const company = searchParams.get("company") || "";
@@ -18,7 +21,7 @@ export const SearchContainer = () => {
 
   useEffect(() => {
     fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/search?language=${language}&city=${city}&company=${company}&keyword=${keyword}&position=${position}&workingForm=${workingForm}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/search?language=${language}&city=${city}&company=${company}&keyword=${keyword}&position=${position}&workingForm=${workingForm}&page=${page}`,
       {
         method: "GET",
       }
@@ -27,9 +30,11 @@ export const SearchContainer = () => {
       .then((data) => {
         if (data.code == "success") {
           setJobList(data.jobs);
+          setTotalPage(data.totalPage);
+          setTotalRecord(data.totalRecord);
         }
       });
-  }, [city, company, language, keyword, position, workingForm]);
+  }, [city, company, language, keyword, position, workingForm, page]);
 
   const handleFilterStatus = (event: any) => {
     const value = event.target.value;
@@ -55,10 +60,15 @@ export const SearchContainer = () => {
     router.push(`?${params.toString()}`);
   };
 
+  const handlePagination = (event: any) => {
+    const value = event.target.value;
+    setPage(parseInt(value));
+  };
+
   return (
     <>
       <h2 className="font-[700] text-[28px] text-[#121212] mb-[30px]">
-        {jobList.length} việc làm{" "}
+        {totalRecord} việc làm{" "}
         <span className="text-[#0088FF]">
           {language} {city} {company} {keyword}
         </span>
@@ -104,16 +114,23 @@ export const SearchContainer = () => {
         ))}
       </div>
 
-      <div className="mt-[30px]">
-        <select
-          name=""
-          className="border border-[#DEDEDE] rounded-[8px] py-[12px] px-[18px] font-[400] text-[16px] text-[#414042] outline-none"
-        >
-          <option value="">Trang 1</option>
-          <option value="">Trang 2</option>
-          <option value="">Trang 3</option>
-        </select>
-      </div>
+      {totalPage && (
+        <div className="mt-[30px]">
+          <select
+            onChange={handlePagination}
+            name=""
+            className="border border-[#DEDEDE] rounded-[8px] py-[12px] px-[18px] font-[400] text-[16px] text-[#414042]"
+          >
+            {Array(totalPage)
+              .fill("")
+              .map((_, index) => (
+                <option key={index} value={index + 1}>
+                  Trang {index + 1}
+                </option>
+              ))}
+          </select>
+        </div>
+      )}
     </>
   );
 };
