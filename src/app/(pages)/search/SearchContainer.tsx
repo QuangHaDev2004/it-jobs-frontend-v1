@@ -13,11 +13,12 @@ export const SearchContainer = () => {
   const company = searchParams.get("company") || "";
   const keyword = searchParams.get("keyword") || "";
   const position = searchParams.get("position") || "";
+  const workingForm = searchParams.get("workingForm") || "";
   const [jobList, setJobList] = useState<any[]>([]);
 
   useEffect(() => {
     fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/search?language=${language}&city=${city}&company=${company}&keyword=${keyword}&position=${position}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/search?language=${language}&city=${city}&company=${company}&keyword=${keyword}&position=${position}&workingForm=${workingForm}`,
       {
         method: "GET",
       }
@@ -28,7 +29,7 @@ export const SearchContainer = () => {
           setJobList(data.jobs);
         }
       });
-  }, [city, company, language, keyword, position]);
+  }, [city, company, language, keyword, position, workingForm]);
 
   const handleFilterStatus = (event: any) => {
     const value = event.target.value;
@@ -37,6 +38,18 @@ export const SearchContainer = () => {
       params.set("position", value);
     } else {
       params.delete("position");
+    }
+
+    router.push(`?${params.toString()}`);
+  };
+
+  const handleFilterWorkingForm = (event: any) => {
+    const value = event.target.value;
+    const params = new URLSearchParams(searchParams.toString());
+    if (value) {
+      params.set("workingForm", value);
+    } else {
+      params.delete("workingForm");
     }
 
     router.push(`?${params.toString()}`);
@@ -71,6 +84,8 @@ export const SearchContainer = () => {
           ))}
         </select>
         <select
+          onChange={handleFilterWorkingForm}
+          defaultValue={workingForm}
           name=""
           className="border border-[#DEDEDE] rounded-[20px] h-[36px] px-[18px] font-[400] text-[16px] text-[#414042]"
         >
