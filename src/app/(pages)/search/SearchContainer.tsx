@@ -9,11 +9,12 @@ export const SearchContainer = () => {
   const language = searchParams.get("language") || "";
   const city = searchParams.get("city") || "";
   const company = searchParams.get("company") || "";
+  const keyword = searchParams.get("keyword") || "";
   const [jobList, setJobList] = useState<any[]>([]);
 
   useEffect(() => {
     fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/search?language=${language}&city=${city}&company=${company}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/search?language=${language}&city=${city}&company=${company}&keyword=${keyword}`,
       {
         method: "GET",
       }
@@ -24,13 +25,15 @@ export const SearchContainer = () => {
           setJobList(data.jobs);
         }
       });
-  }, [city, company, language]);
+  }, [city, company, language, keyword]);
 
   return (
     <>
       <h2 className="font-[700] text-[28px] text-[#121212] mb-[30px]">
         {jobList.length} việc làm{" "}
-        <span className="text-[#0088FF]">{language} {city} {company}</span>
+        <span className="text-[#0088FF]">
+          {language} {city} {company} {keyword}
+        </span>
       </h2>
 
       <div
