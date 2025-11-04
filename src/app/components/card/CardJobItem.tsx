@@ -47,7 +47,7 @@ export const CardJobItem = ({ item }: { item: any }) => {
           <FaBriefcase className="text-[16px]" /> Tại văn phòng
         </div>
         <div className="mt-[6px] flex justify-center items-center gap-[8px] font-[400] text-[14px] text-[#121212]">
-          <FaLocationDot className="text-[16px]" /> Ha Noi
+          <FaLocationDot className="text-[16px]" /> {item.cityName}
         </div>
         <div className="mt-[12px] mb-[20px] mx-[16px] flex flex-wrap justify-center gap-[8px]">
           {item.technologies.map((itemTech: string, indexTech: number) => (
