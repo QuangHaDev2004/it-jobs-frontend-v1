@@ -73,6 +73,10 @@ export const HeaderMenu = (props: { showMenu: boolean }) => {
           name: "MB Bank",
           link: "/search?company=MB Bank",
         },
+        {
+          name: "ABC.LTD",
+          link: "/search?company=ABC.LTD",
+        },
       ],
     },
     {
